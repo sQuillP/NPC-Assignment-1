@@ -3,24 +3,28 @@ import java.io.*;
 
 
 /*
-* William Pattison
+* SolveISet will find an independent set from a given graph by inverting the bits and
+* finding a clique.
 *
+* William Pattison
+* IT 328
+* NPC programming assignment 1
 */
 
 
 public class SolveISet
 {
 
+  /*Adjacency matrix*/
   int[][] graph;
+
+  /*Degree and the size of the graph */
   int degree = 0, size;
 
+  /*Computing time for finding clique.*/
+  long totalTime;
 
-  SolveISet()
-  {
-
-  }
-
-  /*Print contents of the graph*/
+  /*Print contents of the graph debug purposes*/
   public void print()
   {
     for(int i = 0; i<graph.length; i++)
@@ -31,53 +35,45 @@ public class SolveISet
     }
   }
 
-  /*Flip the values in the graph to find the compliment*/
-  private void compliment()
-  {
-    for(int i = 0; i<graph.length; i++)
-    {
-      for(int j = 0; j<graph.length; j++)
-      {
-        if(graph[i][j] == 0)
-          graph[i][j] = 1;
-        else if(i != j)
-          graph[i][j] = 0;
-      }
-    }
-  }
 
-
+  /*Method will find an independent set given a certain graph input.*/
   private void solveISet(int iteration)
   {
+    long start = System.currentTimeMillis();
+    // Assign clique algorithm output to the clique ArrayList.
     ArrayList<Integer> clique = new ArrayList<Integer>();
-    clique.add(0);
-    clique.add(1);
-    clique.add(4);
-    System.out.print("G"+iteration+"("+size+","+(degree/2)+")");
+    //---------------------------------------------
+    totalTime = System.currentTimeMillis()-start;
+    System.out.print("\nG"+iteration+"("+size+","+(degree/2)+")");
     System.out.print(" {");
     for(int i = 0; i<clique.size(); i++)
     {
       if(i == clique.size()-1)
-        System.out.println(clique.get(i)+"} (size="+clique.size()+", 0 ms)");
+        System.out.print(clique.get(i));
       else
         System.out.print(clique.get(i)+",");
     }
+    System.out.println("} (size="+clique.size()+", "+totalTime+" ms)");
 
   }
 
 
-  /*Read in graphs from a file and run independent set algorithm*/
+  /*Read in graphs from a file and run independent set algorithm,
+  Prints out the results. USE THIS TO RUN THE PROGRAM*/
   public void readFile(String filename)
   {
-    int counter = 0;
+    int counter = 0, iter = 0;
     int col = 0;
+    String input;
     try {
       BufferedReader bf = new BufferedReader(new FileReader(filename));
       StringTokenizer st;
-      // for(int j = 0; j<100; j++)
-      // {
-        size = Integer.parseInt(bf.readLine());
+      input = bf.readLine();
+      while(input!=null)
+      {
+        size = Integer.parseInt(input);
         graph = new int[size][size];
+        iter++;
         for(int i = 0; i<size; i++)
         {
           st = new StringTokenizer(bf.readLine()," ");
@@ -92,22 +88,14 @@ public class SolveISet
         }
         degree = counter;
         counter = 0;
-        solveISet(2);
-      // }
+        solveISet(iter);
+        input = bf.readLine();
     }
+  }
     catch (IOException e)
     {
       System.out.println("Unable to open file "+filename);
     }
   }
-
-
-  //
-  public static void main(String[] args)
-  {
-    SolveISet test = new SolveISet();
-    test.readFile("graphs2021.txt");
-  }
-
 
 }
