@@ -54,7 +54,6 @@ public class SolveISet
         System.out.print(clique.get(i)+",");
     }
     System.out.println("} (size="+clique.size()+", "+totalTime+" ms)");
-
   }
 
 
@@ -97,5 +96,4 @@ public class SolveISet
       System.out.println("Unable to open file "+filename);
     }
   }
-
 }
