@@ -36,12 +36,20 @@ public class SolveISet
   }
 
 
+
+  SolveISet(String filename)
+  {
+    readFile(filename);
+  }
+
+
   /*Method will find an independent set given a certain graph input.*/
   private void solveISet(int iteration)
   {
+    solveClique solve = new solveClique(graph);
     long start = System.currentTimeMillis();
-    // Assign clique algorithm output to the clique ArrayList.
-    ArrayList<Integer> clique = new ArrayList<Integer>();
+    solve.findCliqueSizeN(solve.findTheoreticalMaxClique());
+    ArrayList<Integer> clique = solve.bestClique;
     //---------------------------------------------
     totalTime = System.currentTimeMillis()-start;
     System.out.print("\nG"+iteration+"("+size+","+(degree/2)+")");

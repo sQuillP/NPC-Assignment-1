@@ -25,6 +25,13 @@ public class Solve3CNF
   ArrayList<Integer> vals;
 
 
+
+  Solve3CNF(String filename)
+  {
+    readFile(filename);
+  }
+
+
   /*Print the 3CNF and adjacency matrix (debug)*/
   public void print()
   {
@@ -150,11 +157,10 @@ public class Solve3CNF
   in the graph.*/
   public void find3SAT(int graphNumber)
   {
+    solveClique solve = new solveClique(graph);
     long start = System.currentTimeMillis();
-    /*Assign the cliques arraylist to the clique finder*/
-    ArrayList<Integer> cliques = new ArrayList<Integer>();
-    /*cliques ArrayList needs to hold the index values of the nodes involved in the clique.*/
-    /*#################################*/
+    solve.findCliqueSizeN(solve.findTheoreticalMaxClique());
+    ArrayList<Integer> cliques =  solve.bestClique;
     totalTime = System.currentTimeMillis()-start;
     Set<Integer> set = new HashSet<Integer>();
     String val;
@@ -165,7 +171,7 @@ public class Solve3CNF
     for(int i : cliques)
       set.add(vals.get(i));
     System.out.print("\n\n3CNF No."+graphNumber+":[n="+numVariables+" k="+vals.size()/3+"]  ");
-    if(cliques.size()!=0) //If a there exists an assignment that satisfies 3SAT
+    if(cliques.size()>=graph.length/3) //If a there exists an assignment that satisfies 3SAT
     {
       printAssignments(set,numVariables);
       System.out.print("\n(");
